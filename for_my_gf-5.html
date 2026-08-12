@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You, My Love 💗</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Georgia,"Times New Roman",serif}
+body{
+  overflow:hidden;color:#fff;
+  background:radial-gradient(circle at 50% 15%,#5d2148 0,#24132e 38%,#090714 100%);
+}
+.page{position:absolute;inset:0;display:none;align-items:center;justify-content:center;padding:24px;text-align:center}
+.page.active{display:flex}
+.card{
+  width:min(720px,94vw);padding:42px 28px;border:1px solid rgba(255,255,255,.18);
+  border-radius:30px;background:rgba(255,255,255,.08);backdrop-filter:blur(16px);
+  box-shadow:0 25px 80px rgba(0,0,0,.45)
+}
+h1{font-size:clamp(38px,8vw,72px);margin:8px 0 16px}
+h2{font-size:clamp(28px,6vw,48px);margin:8px 0 18px}
+p{font-size:20px;line-height:1.6;opacity:.9}
+.heart{font-size:72px;animation:float 2.5s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-12px) scale(1.05)}}
+button{
+  border:0;border-radius:999px;padding:14px 24px;margin:8px;
+  font-size:17px;font-weight:bold;cursor:pointer;color:#fff;
+  background:linear-gradient(135deg,#ff5d9e,#c53d91);
+  box-shadow:0 10px 25px rgba(255,70,150,.25);transition:.25s
+}
+button:hover{transform:translateY(-3px) scale(1.03)}
+.moods{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:25px}
+.mood{min-height:100px;background:rgba(255,255,255,.1);font-size:19px}
+.mood span{display:block;font-size:34px;margin-bottom:5px}
+.secondary{background:rgba(255,255,255,.12)}
+#message{min-height:70px;margin-top:20px;font-size:21px;color:#ffd5e7}
+#question .card{position:relative;overflow:hidden}
+.answers{position:relative;height:90px;margin-top:25px}
+#noBtn{position:absolute;background:rgba(255,255,255,.12)}
+#yesBtn{position:relative;z-index:2}
+#proposal{background:radial-gradient(circle at 50% 45%,#64244f,#211027 48%,#070611)}
+.box-wrap{height:240px;position:relative;display:flex;justify-content:center;align-items:flex-end}
+.ringbox{width:190px;height:120px;position:relative;transform-style:preserve-3d;perspective:600px}
+.base{position:absolute;bottom:0;width:190px;height:100px;border-radius:12px 12px 20px 20px;background:linear-gradient(145deg,#a51f5e,#5a123e);box-shadow:0 20px 40px #0008}
+.lid{position:absolute;bottom:78px;left:0;width:190px;height:72px;border-radius:12px 12px 7px 7px;background:linear-gradient(145deg,#d73c83,#73164d);transform-origin:bottom;transition:1.3s;z-index:4}
+.open .lid{transform:rotateX(-115deg) translateY(-5px)}
+.cushion{position:absolute;bottom:25px;left:25px;width:140px;height:65px;border-radius:50%;background:#280d24}
+.ring{
+  position:absolute;bottom:34px;left:72px;width:55px;height:55px;border:9px solid #f5d56b;
+  border-radius:50%;z-index:3;transform:translateY(70px) scale(.7);opacity:0;
+  transition:1.5s .5s;filter:drop-shadow(0 0 12px #ffe98a)
+}
+.open .ring{transform:translateY(-55px) scale(1);opacity:1}
+.diamond{
+  position:absolute;top:-28px;left:7px;width:24px;height:24px;transform:rotate(45deg);
+  background:linear-gradient(135deg,#fff,#9ee9ff 45%,#fff 70%);box-shadow:0 0 25px #bff7ff
+}
+.sparkles{position:absolute;inset:0;pointer-events:none}
+.sparkles i{position:absolute;width:5px;height:5px;background:#fff;border-radius:50%;opacity:0}
+.open .sparkles i{animation:twinkle 1.7s infinite}
+.sparkles i:nth-child(1){left:18%;top:25%}.sparkles i:nth-child(2){left:78%;top:30%;animation-delay:.3s!important}
+.sparkles i:nth-child(3){left:30%;top:65%;animation-delay:.6s!important}.sparkles i:nth-child(4){left:70%;top:68%;animation-delay:.9s!important}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:1;transform:scale(2.5)}}
+#finalText{opacity:0;transform:translateY(15px);transition:1s 1.8s}
+.open + #finalText{opacity:1;transform:none}
+.heartfield{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.heartfield span{position:absolute;bottom:-30px;animation:rise linear infinite;opacity:.35}
+@keyframes rise{to{transform:translateY(-110vh) rotate(360deg);opacity:0}}
+@media(max-width:560px){.moods{grid-template-columns:repeat(2,1fr)}.card{padding:32px 18px}p{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="heartfield" id="hearts"></div>
+
+<section class="page active" id="home">
+  <div class="card">
+    <div class="heart">💗</div>
+    <h1>Hey, beautiful.</h1>
+    <p>I made a tiny little world just for you.<br>Because you deserve something made with love.</p>
+    <button onclick="show('mood')">Enter my little world ✨</button>
+  </div>
+</section>
+
+<section class="page" id="mood">
+  <div class="card">
+    <h2>How are you feeling today?</h2>
+    <p>Pick whatever matches your mood. I have something to tell you. 💌</p>
+    <div class="moods">
+      <button class="mood" onclick="mood('happy')"><span>😊</span>Happy</button>
+      <button class="mood" onclick="mood('sad')"><span>😔</span>Sad</button>
+      <button class="mood" onclick="mood('angry')"><span>😤</span>Angry</button>
+      <button class="mood" onclick="mood('bored')"><span>🥱</span>Bored</button>
+      <button class="mood" onclick="mood('crying')"><span>🥺</span>Crying</button>
+      <button class="mood" onclick="mood('loved')"><span>🥰</span>Loved</button>
+    </div>
+    <div id="message"></div>
+    <button class="secondary" onclick="show('question')">I have one more thing to ask… 💍</button>
+  </div>
+</section>
+
+<section class="page" id="question">
+  <div class="card">
+    <div class="heart">💍</div>
+    <h2>One more question…</h2>
+    <p>After everything, every laugh, every little moment…</p>
+    <h1 style="font-size:clamp(34px,7vw,60px)">Will you marry me?</h1>
+    <div class="answers">
+      <button id="yesBtn" onclick="openRing()">YES 💗</button>
+      <button id="noBtn" onmouseover="runAway()" onclick="runAway()">NO 🙈</button>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="proposal">
+  <div class="card">
+    <div class="box-wrap">
+      <div class="ringbox" id="ringbox">
+        <div class="base"></div>
+        <div class="cushion"></div>
+        <div class="ring"><div class="diamond"></div></div>
+        <div class="lid"></div>
+        <div class="sparkles"><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+    <div id="finalText">
+      <h2>She said YES! 💗</h2>
+      <p>Then this little ring belongs to you. 💍</p>
+      <p>Whatever the future brings, I hope we keep choosing each other, again and again.</p>
+      <div style="font-size:30px">❤️ ✨ 💎 ✨ ❤️</div>
+    </div>
+  </div>
+</section>
+
+<script>
+const messages={
+ happy:"Your smile makes everything feel a little brighter. Keep smiling, beautiful. 💗",
+ sad:"Come here, sweetheart. You don't have to pretend you're okay. I'm always cheering for you. 🫂",
+ angry:"Take a breath, my love. Whatever happened, you deserve a moment to breathe and feel better. ❤️",
+ bored:"Bored? Then congratulations—you've officially been assigned the job of thinking about me. 😌💕",
+ crying:"Dry those tears when you can. You are precious, and a bad moment doesn't change that. 🥺❤️",
+ loved:"Good. Because you are loved more than these tiny words could ever explain. 💗"
+};
+function show(id){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+}
+function mood(type){
+ document.getElementById('message').textContent=messages[type];
+}
+function runAway(){
+ const b=document.getElementById('noBtn'), a=b.parentElement;
+ const x=Math.random()*(a.clientWidth-b.offsetWidth-10);
+ const y=Math.random()*55;
+ b.style.left=Math.max(0,x)+'px'; b.style.top=y+'px';
+}
+function openRing(){
+ show('proposal');
+ setTimeout(()=>document.getElementById('ringbox').classList.add('open'),250);
+}
+for(let i=0;i<22;i++){
+ const s=document.createElement('span');
+ s.textContent=Math.random()>.5?'♥':'✦';
+ s.style.left=Math.random()*100+'%';
+ s.style.fontSize=(12+Math.random()*18)+'px';
+ s.style.animationDuration=(7+Math.random()*9)+'s';
+ s.style.animationDelay=(-Math.random()*12)+'s';
+ document.getElementById('hearts').appendChild(s);
+}
+</script>
+</body>
+</html>
